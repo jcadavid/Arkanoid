@@ -11,10 +11,10 @@ public enum PowerUpType
     score500,
     slow,
     fast,
-    superball,
+    //superball,
     paddlesmall,
     paddlelarge,
-    shooting
+    //shooting
 }
 public class PowerUp : MonoBehaviour
 {
@@ -46,8 +46,8 @@ public class PowerUp : MonoBehaviour
     private void Init()
     {
         _renderer = GetComponentInChildren<SpriteRenderer>();
-        //type = (PowerUpType)Random.Range(0, 10);
-        type = PowerUpType.multiball;
+        type = (PowerUpType)Random.Range(0, 9);
+        //type = PowerUpType.multiball;
         _renderer.sprite = GetPowerUpSprite();
 
     }
@@ -117,11 +117,11 @@ public class PowerUp : MonoBehaviour
                     FastBall();
                     break;
                 }
-            case PowerUpType.shooting:
+            /*case PowerUpType.shooting:
                 {
                     Shooting();
                     break;
-                }
+                }*/
             case PowerUpType.paddlelarge:
                 {
                     ScalePaddle(scale);
