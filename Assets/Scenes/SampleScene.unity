@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 286063221}
   - component: {fileID: 286063223}
   - component: {fileID: 286063222}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -370,7 +370,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 333722169}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -406,7 +406,7 @@ GameObject:
   - component: {fileID: 442684531}
   - component: {fileID: 442684533}
   - component: {fileID: 442684532}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: TopWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -598,7 +598,7 @@ GameObject:
   - component: {fileID: 525556123}
   - component: {fileID: 525556125}
   - component: {fileID: 525556124}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -708,7 +708,7 @@ GameObject:
   - component: {fileID: 1281084406}
   - component: {fileID: 1281084405}
   - component: {fileID: 1281084407}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BottomWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -953,6 +953,7 @@ MonoBehaviour:
   _levels:
   - {fileID: 11400000, guid: 16b5351a58791df4dbc694549491fe26, type: 2}
   - {fileID: 11400000, guid: dedafcda9ba81634880df0b1014a8838, type: 2}
+  TimeBalls: 0
   _paddle: {fileID: 244907135}
 --- !u!4 &1687942322
 Transform:
