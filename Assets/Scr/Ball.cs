@@ -93,7 +93,5 @@ public class Ball : MonoBehaviour
         maxTime = Time.time + seconds;
     }
 
-    public void setIgnoreCollition(Collider2D collider){
-        Physics2D.IgnoreCollision(collider, GetComponent<Collider2D>());
-    }
+   
 }

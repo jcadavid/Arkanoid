@@ -21,8 +21,10 @@ public class ArkanoidController : MonoBehaviour
     private List<PowerUp> _powerups = new List<PowerUp>();
     private int _totalScore = 0;
 
-
-
+    bool _multipleballsPU = false;
+    [SerializeField]
+    float TimeBalls = 5;
+    float maxTimeBalls = 2;
 
     [SerializeField]
     private Paddle _paddle;
@@ -34,6 +36,26 @@ public class ArkanoidController : MonoBehaviour
         ArkanoidEvent.OnPowerUpScoreEvent += OnPowerUpScoreEvent;
         ArkanoidEvent.OnPowerUpChangeScalePaddleEvent += OnPowerUpChangeScalePaddleEvent;
         ArkanoidEvent.OnPowerUpChangeBallSpeedEvent += OnPowerUpChangeBallSpeedEvent;
+        ArkanoidEvent.OnPowerUpAddMoreBallsEvent += OnPowerUpAddMoreBallsEvents;
+    }
+
+    private void OnPowerUpAddMoreBallsEvents()
+    {
+        _multipleballsPU = true;
+        TimeBalls = Time.time + maxTimeBalls;
+        Debug.Log("Actual Time"+Time.time+ "Calculated: " + TimeBalls);
+
+        if (_balls.Count == 1)
+        {
+            _balls.Add(CreateBallAt(BALL_INIT_POSITION));
+            _balls.Add(CreateBallAt(BALL_INIT_POSITION));
+        }
+        else if (_balls.Count < 3)
+        {
+            _balls.Add(CreateBallAt(BALL_INIT_POSITION));
+
+        }
+
     }
 
     private void OnDestroy()
@@ -51,6 +73,26 @@ public class ArkanoidController : MonoBehaviour
         {
             InitGame();
             _paddle.resetHorizontalScale(1f);
+            _multipleballsPU = false;
+        }
+
+        if (_multipleballsPU)
+        {
+            if (Time.time > TimeBalls)
+            {
+                Debug.Log("Has elapsed: " + Time.time);
+                if (_balls.Count == 1)
+                {
+                    _multipleballsPU = false;
+                }
+                else if (_balls.Count > 1)
+                {
+                    Ball deletedBall = _balls[_balls.Count - 1];
+                    _balls.Remove(deletedBall);
+                    Destroy(deletedBall.gameObject);
+                    Destroy(deletedBall);
+                }
+            }
         }
     }
 
@@ -85,9 +127,11 @@ public class ArkanoidController : MonoBehaviour
     private void ClearBalls()
     {
         for (int i = _balls.Count - 1; i >= 0; i--)
-        {
-            _balls[i].gameObject.SetActive(false);
-            Destroy(_balls[i]);
+        {   
+            Ball destroyBall = _balls[i];
+            destroyBall.gameObject.SetActive(false);
+            Destroy(destroyBall.gameObject);
+            Destroy(destroyBall);
         }
 
         _balls.Clear();

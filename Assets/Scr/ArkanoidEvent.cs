@@ -12,4 +12,6 @@ public static class ArkanoidEvent
     public static PowerUpChangeBallSpeed OnPowerUpChangeBallSpeedEvent;
     public delegate void PowerUpChangeScalePaddle(float scale);
     public static PowerUpChangeScalePaddle OnPowerUpChangeScalePaddleEvent;
+    public delegate void PowerUpAddMoreBalls();
+    public static PowerUpAddMoreBalls OnPowerUpAddMoreBallsEvent;
 }

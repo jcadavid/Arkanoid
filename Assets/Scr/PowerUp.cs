@@ -47,7 +47,7 @@ public class PowerUp : MonoBehaviour
     {
         _renderer = GetComponentInChildren<SpriteRenderer>();
         //type = (PowerUpType)Random.Range(0, 10);
-        type = PowerUpType.slow;
+        type = PowerUpType.multiball;
         _renderer.sprite = GetPowerUpSprite();
 
     }
@@ -138,7 +138,7 @@ public class PowerUp : MonoBehaviour
 
     private void MultiBall()
     {
-
+        ArkanoidEvent.OnPowerUpAddMoreBallsEvent?.Invoke();
     }
     private void Score(int score)
     {
