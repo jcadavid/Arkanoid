@@ -38,11 +38,12 @@ public class PowerUp : MonoBehaviour
         Init();
     }
 
-    private void Update()
+   /* private void Update()
     {
         float yValue = Time.deltaTime * yVelocity;
         transform.Translate(0, -yValue, 0);
     }
+    */
     private void Init()
     {
         _renderer = GetComponentInChildren<SpriteRenderer>();
@@ -70,11 +71,12 @@ public class PowerUp : MonoBehaviour
         if (other.gameObject.tag == "Paddle")
         {
             Effect();
-            Destroy(gameObject);
+            ArkanoidEvent.OnPowerUpDestroy?.Invoke(this);
+            
         }
         else if (other.gameObject.tag != "Ball" && other.gameObject.tag != "Block")
         {
-            Destroy(gameObject);
+            ArkanoidEvent.OnPowerUpDestroy?.Invoke(this);
         }
     }
 
@@ -152,11 +154,7 @@ public class PowerUp : MonoBehaviour
     {
         ArkanoidEvent.OnPowerUpChangeBallSpeedEvent?.Invoke(_velocityChange, _effectTime);
     }
-    private void SuperBall()
-    {
-
-    }
-
+    
     private void ScalePaddle(float scale)
     {
         ArkanoidEvent.OnPowerUpChangeScalePaddleEvent?.Invoke(scale);

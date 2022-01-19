@@ -37,13 +37,14 @@ public class ArkanoidController : MonoBehaviour
         ArkanoidEvent.OnPowerUpChangeScalePaddleEvent += OnPowerUpChangeScalePaddleEvent;
         ArkanoidEvent.OnPowerUpChangeBallSpeedEvent += OnPowerUpChangeBallSpeedEvent;
         ArkanoidEvent.OnPowerUpAddMoreBallsEvent += OnPowerUpAddMoreBallsEvents;
+        ArkanoidEvent.OnPowerUpDestroy += OnPowerUpDestroy;
     }
 
     private void OnPowerUpAddMoreBallsEvents()
     {
         _multipleballsPU = true;
         TimeBalls = Time.time + maxTimeBalls;
-        Debug.Log("Actual Time"+Time.time+ "Calculated: " + TimeBalls);
+        Debug.Log("Actual Time" + Time.time + "Calculated: " + TimeBalls);
 
         if (_balls.Count == 1)
         {
@@ -65,15 +66,20 @@ public class ArkanoidController : MonoBehaviour
         ArkanoidEvent.OnPowerUpScoreEvent -= OnPowerUpScoreEvent;
         ArkanoidEvent.OnPowerUpChangeScalePaddleEvent -= OnPowerUpChangeScalePaddleEvent;
         ArkanoidEvent.OnPowerUpChangeBallSpeedEvent -= OnPowerUpChangeBallSpeedEvent;
+        ArkanoidEvent.OnPowerUpAddMoreBallsEvent -= OnPowerUpAddMoreBallsEvents;
+        ArkanoidEvent.OnPowerUpDestroy -= OnPowerUpDestroy;
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            InitGame();
+            _totalScore = 0;
+            ArkanoidEvent.OnScoreUpdatedEvent?.Invoke(0, _totalScore);
             _paddle.resetHorizontalScale(1f);
             _multipleballsPU = false;
+            ClearPowerUps();
+            InitGame();
         }
 
         if (_multipleballsPU)
@@ -96,12 +102,36 @@ public class ArkanoidController : MonoBehaviour
         }
     }
 
+    private void ClearPowerUps()
+    {
+        for (int i = _powerups.Count - 1; i >= 0; i--)
+        {
+            PowerUp destroyPowerup = _powerups[i];
+            DestroyPowerUp(destroyPowerup);
+        }
+
+        _powerups.Clear();
+    }
+
+    private void DestroyPowerUp(PowerUp powerup)
+    {
+        if (powerup != null)
+        {
+            _powerups.Remove(powerup);
+            powerup.gameObject.SetActive(false);
+            Destroy(powerup.gameObject);
+            Destroy(powerup);
+        }
+    }
+
     private void InitGame()
     {
         _currentLevel = 0;
         _totalScore = 0;
 
         _gridController.BuildGrid(_levels[0]);
+        ArkanoidEvent.OnGameStartEvent?.Invoke();
+        ArkanoidEvent.OnScoreUpdatedEvent?.Invoke(0, _totalScore);
         SetInitialBall();
     }
 
@@ -127,7 +157,7 @@ public class ArkanoidController : MonoBehaviour
     private void ClearBalls()
     {
         for (int i = _balls.Count - 1; i >= 0; i--)
-        {   
+        {
             Ball destroyBall = _balls[i];
             destroyBall.gameObject.SetActive(false);
             Destroy(destroyBall.gameObject);
@@ -152,8 +182,10 @@ public class ArkanoidController : MonoBehaviour
         {
             //Game over
             ClearBalls();
+            ClearPowerUps();
 
             Debug.Log("Game Over: LOSE!!!");
+            ArkanoidEvent.OnGameOverEvent?.Invoke();
         }
     }
 
@@ -166,6 +198,8 @@ public class ArkanoidController : MonoBehaviour
         if (blockDestroyed != null)
         {
             _totalScore += blockDestroyed.Score;
+
+            ArkanoidEvent.OnScoreUpdatedEvent?.Invoke(blockDestroyed.Score, _totalScore);
             float randomValue = Random.value;
             Vector2 blockDestroyedPosition = blockDestroyed.GetComponent<Transform>().position;
             if (randomValue <= 1)
@@ -212,5 +246,11 @@ public class ArkanoidController : MonoBehaviour
     private void OnPowerUpScoreEvent(int score)
     {
         _totalScore += score;
+        ArkanoidEvent.OnScoreUpdatedEvent?.Invoke(score, _totalScore);
+    }
+
+    private void OnPowerUpDestroy(PowerUp destroy)
+    {
+        DestroyPowerUp(destroy);
     }
 }

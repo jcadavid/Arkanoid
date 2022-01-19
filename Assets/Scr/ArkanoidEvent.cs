@@ -8,10 +8,22 @@ public static class ArkanoidEvent
 
     public delegate void PowerUpScoreAction(int score);
     public static PowerUpScoreAction OnPowerUpScoreEvent;
+
     public delegate void PowerUpChangeBallSpeed(float velocity, int seconds);
     public static PowerUpChangeBallSpeed OnPowerUpChangeBallSpeedEvent;
+
     public delegate void PowerUpChangeScalePaddle(float scale);
     public static PowerUpChangeScalePaddle OnPowerUpChangeScalePaddleEvent;
+    
+    public delegate void PowerUpDestroy(PowerUp powerup);
+    public static PowerUpDestroy OnPowerUpDestroy;
+
     public delegate void PowerUpAddMoreBalls();
     public static PowerUpAddMoreBalls OnPowerUpAddMoreBallsEvent;
+    public delegate void ScoreUpdatedAction(int score, int totalScore);
+    public static ScoreUpdatedAction OnScoreUpdatedEvent;
+    public delegate void GameStartAction();
+    public static GameStartAction OnGameStartEvent;
+    public delegate void GameOverAction();
+    public static GameOverAction OnGameOverEvent;
 }
